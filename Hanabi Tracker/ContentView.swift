@@ -55,11 +55,6 @@ struct ContentView: View {
     
     var body: some View {
         List {
-//            HStack {
-//                ForEach(0..<5) { index in
-//                    Button("", systemImage: "arrow.triangle.left.fill", action: { MassApplyClue(cards: cards) })
-//                }
-//            }
             ForEach($cards) { card in
                 CardRowView(card: card) // Make a row for each card
             }
@@ -89,7 +84,7 @@ struct CardRowView: View {
     @State private var threeState:Int   = NOINFO
     @State private var fourState:Int    = NOINFO
     @State private var fiveState:Int    = NOINFO
-    let SYMBOLSIZE:CGFloat = 40
+    let SYMBOLSIZE:CGFloat = 35
     
     // Iterate the attribute state
     func stateUpdator(state: inout Int) {
@@ -123,6 +118,12 @@ struct CardRowView: View {
         return state == NEGATIVE ? 0.1 : 1.0
     }
     
+//    func colorButton(state: inout &Int, color: Color) -> some View {
+//        return Button(action: { stateUpdator(state: &state) }) { label: do { Image(systemName: symbolName(state: state)) } }
+//            .buttonStyle(PlainButtonStyle())
+//            .font(.system(size: SYMBOLSIZE))
+//    }
+    
     var body: some View {
         HStack(spacing: 0) {
             VStack {
@@ -131,6 +132,7 @@ struct CardRowView: View {
                     .font(.system(size: SYMBOLSIZE))
                     .foregroundStyle(symbolForeground(state: greenState, color: .green))
                     .opacity(attributeOpacity(state: greenState))
+//                    .onLongPressGesture { nullCardNums() }
                 Button(action: { stateUpdator(state: &yellowState) })  { label: do { Image(systemName: symbolName(state: yellowState)) } }
                     .buttonStyle(PlainButtonStyle()) // for tappability reasons
                     .font(.system(size: SYMBOLSIZE))
