@@ -55,6 +55,14 @@ struct ContentView: View {
     
     var body: some View {
         List {
+            HStack(spacing:5){
+                Button("", systemImage: "plus.square", action: {cards.append(Card())})
+                    .rotationEffect(Angle(degrees: -90))
+                    .buttonStyle(PlainButtonStyle())
+                Button("", systemImage: "minus.square", action: {cards.removeLast()})
+                    .rotationEffect(Angle(degrees: -90))
+                    .buttonStyle(PlainButtonStyle())
+            }
             ForEach($cards) { card in
                 CardRowView(card: card) // Make a row for each card
             }
