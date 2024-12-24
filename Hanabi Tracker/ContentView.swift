@@ -129,11 +129,166 @@ struct CardRowView: View {
         return state == NEGATIVE ? 0.1 : 1.0
     }
     
-//    func colorButton(state: inout &Int, color: Color) -> some View {
-//        return Button(action: { stateUpdator(state: &state) }) { label: do { Image(systemName: symbolName(state: state)) } }
-//            .buttonStyle(PlainButtonStyle())
-//            .font(.system(size: SYMBOLSIZE))
-//    }
+    //    func colorButton(state: inout &Int, color: Color) -> some View {
+    //        return Button(action: { stateUpdator(state: &state) }) { label: do { Image(systemName: symbolName(state: state)) } }
+    //            .buttonStyle(PlainButtonStyle())
+    //            .font(.system(size: SYMBOLSIZE))
+    //    }
+    
+    func removeOtherUnkownColorAttributes(color: Color) {
+        switch color{
+        case .red:
+            removeColorAttributeIfNoPositive(color: .yellow)
+            removeColorAttributeIfNoPositive(color: .green)
+            removeColorAttributeIfNoPositive(color: .blue)
+            removeColorAttributeIfNoPositive(color: .white)
+            removeColorAttributeIfNoPositive(color: .teal)
+            break
+        case .yellow:
+            removeColorAttributeIfNoPositive(color: .red)
+            removeColorAttributeIfNoPositive(color: .green)
+            removeColorAttributeIfNoPositive(color: .blue)
+            removeColorAttributeIfNoPositive(color: .white)
+            removeColorAttributeIfNoPositive(color: .teal)
+            break
+        case .green:
+            removeColorAttributeIfNoPositive(color: .red)
+            removeColorAttributeIfNoPositive(color: .yellow)
+            removeColorAttributeIfNoPositive(color: .blue)
+            removeColorAttributeIfNoPositive(color: .white)
+            removeColorAttributeIfNoPositive(color: .teal)
+            break
+        case .blue:
+            removeColorAttributeIfNoPositive(color: .red)
+            removeColorAttributeIfNoPositive(color: .yellow)
+            removeColorAttributeIfNoPositive(color: .green)
+            removeColorAttributeIfNoPositive(color: .white)
+            removeColorAttributeIfNoPositive(color: .teal)
+            break
+        case .white:
+            removeColorAttributeIfNoPositive(color: .red)
+            removeColorAttributeIfNoPositive(color: .yellow)
+            removeColorAttributeIfNoPositive(color: .green)
+            removeColorAttributeIfNoPositive(color: .blue)
+            removeColorAttributeIfNoPositive(color: .teal)
+            break
+        case .teal:
+            removeColorAttributeIfNoPositive(color: .red)
+            removeColorAttributeIfNoPositive(color: .yellow)
+            removeColorAttributeIfNoPositive(color: .green)
+            removeColorAttributeIfNoPositive(color: .blue)
+            removeColorAttributeIfNoPositive(color: .white)
+            break
+        default:
+            break
+        }
+    }
+    
+    func removeColorAttributeIfNoPositive(color: Color){
+        switch color{
+        case .red:
+            if(redState != KNOWN){
+                redState = NEGATIVE
+            }
+            break
+        case .yellow:
+            if(yellowState != KNOWN){
+                yellowState = NEGATIVE
+            }
+            break
+        case .green:
+            if(greenState != KNOWN){
+                greenState = NEGATIVE
+            }
+            break
+        case .blue:
+            if(blueState != KNOWN){
+                blueState = NEGATIVE
+            }
+            break
+        case .white:
+            if(whiteState != KNOWN){
+                whiteState = NEGATIVE
+            }
+            break
+        case .teal:
+            if(tealState != KNOWN){
+                tealState = NEGATIVE
+            }
+            break
+        default:
+            break
+        }
+    }
+    
+    func removeOtherUnkownNumberAttributes(number: Int){
+        switch number{
+        case 1:
+            removeNumberAttributeIfNoPositive(number: 2)
+            removeNumberAttributeIfNoPositive(number: 3)
+            removeNumberAttributeIfNoPositive(number: 4)
+            removeNumberAttributeIfNoPositive(number: 5)
+            break
+        case 2:
+            removeNumberAttributeIfNoPositive(number: 1)
+            removeNumberAttributeIfNoPositive(number: 3)
+            removeNumberAttributeIfNoPositive(number: 4)
+            removeNumberAttributeIfNoPositive(number: 5)
+            break
+        case 3:
+            removeNumberAttributeIfNoPositive(number: 1)
+            removeNumberAttributeIfNoPositive(number: 2)
+            removeNumberAttributeIfNoPositive(number: 4)
+            removeNumberAttributeIfNoPositive(number: 5)
+            break
+        case 4:
+            removeNumberAttributeIfNoPositive(number: 1)
+            removeNumberAttributeIfNoPositive(number: 2)
+            removeNumberAttributeIfNoPositive(number: 3)
+            removeNumberAttributeIfNoPositive(number: 5)
+            break
+        case 4:
+            removeNumberAttributeIfNoPositive(number: 1)
+            removeNumberAttributeIfNoPositive(number: 2)
+            removeNumberAttributeIfNoPositive(number: 3)
+            removeNumberAttributeIfNoPositive(number: 4)
+            break
+        default:
+            break
+        }
+    }
+    
+    func removeNumberAttributeIfNoPositive(number: Int){
+        switch number{
+        case 1:
+            if(oneState != KNOWN){
+                oneState = NEGATIVE
+            }
+            break
+        case 2:
+            if(twoState != KNOWN){
+                twoState = NEGATIVE
+            }
+            break
+        case 3:
+            if(threeState != KNOWN){
+                threeState = NEGATIVE
+            }
+            break
+        case 4:
+            if(fourState != KNOWN){
+                fourState = NEGATIVE
+            }
+            break
+        case 5:
+            if(fiveState != KNOWN){
+                fiveState = NEGATIVE
+            }
+            break
+        default:
+            break
+        }
+    }
     
     var body: some View {
         HStack(spacing: 0) {
@@ -143,34 +298,40 @@ struct CardRowView: View {
                     .font(.system(size: SYMBOLSIZE))
                     .foregroundStyle(symbolForeground(state: greenState, color: .green))
                     .opacity(attributeOpacity(state: greenState))
-//                    .onLongPressGesture { nullCardNums() }
+                    .simultaneousGesture(LongPressGesture().onEnded({_ in removeOtherUnkownColorAttributes(color: .green)}))
                 Button(action: { stateUpdator(state: &yellowState) })  { label: do { Image(systemName: symbolName(state: yellowState)) } }
                     .buttonStyle(PlainButtonStyle()) // for tappability reasons
                     .font(.system(size: SYMBOLSIZE))
                     .foregroundStyle(symbolForeground(state: yellowState, color: .yellow))
                     .opacity(attributeOpacity(state: yellowState))
+                    .simultaneousGesture(LongPressGesture().onEnded({_ in removeOtherUnkownColorAttributes(color: .yellow)}))
                 Button(action: { stateUpdator(state: &redState) }) { label: do { Image(systemName: symbolName(state: redState)) } }
                     .buttonStyle(PlainButtonStyle())
                     .font(.system(size: SYMBOLSIZE))
                     .foregroundStyle(symbolForeground(state: redState, color: .red))
                     .opacity(attributeOpacity(state: redState))
+                    .simultaneousGesture(LongPressGesture().onEnded({_ in removeOtherUnkownColorAttributes(color: .red)}))
             }
             VStack {
-                Button(action: { stateUpdator(state: &whiteState) }) { label: do { Image(systemName: symbolName(state: whiteState)) } }
-                    .buttonStyle(PlainButtonStyle())
-                    .font(.system(size: SYMBOLSIZE))
-                    .foregroundStyle(symbolForeground(state: whiteState, color: .gray))
-                    .opacity(attributeOpacity(state: whiteState))
                 Button(action: { stateUpdator(state: &tealState) }) { label: do { Image(systemName: symbolName(state: tealState)) } }
                     .buttonStyle(PlainButtonStyle())
                     .font(.system(size: SYMBOLSIZE))
                     .foregroundStyle(symbolForeground(state: tealState, color: .teal))
                     .opacity(attributeOpacity(state: tealState))
+                    .simultaneousGesture(LongPressGesture().onEnded({_ in removeOtherUnkownColorAttributes(color: .teal)}))
+                Button(action: { stateUpdator(state: &whiteState) }) { label: do { Image(systemName: symbolName(state: whiteState)) } }
+                    .buttonStyle(PlainButtonStyle())
+                    .font(.system(size: SYMBOLSIZE))
+                    .foregroundStyle(symbolForeground(state: whiteState, color: .gray))
+                    .opacity(attributeOpacity(state: whiteState))
+                    .simultaneousGesture(LongPressGesture().onEnded({_ in removeOtherUnkownColorAttributes(color: .white)}))
                 Button(action: { stateUpdator(state: &blueState) }) { label: do { Image(systemName: symbolName(state: blueState)) } }
                     .buttonStyle(PlainButtonStyle())
                     .font(.system(size: SYMBOLSIZE))
                     .foregroundStyle(symbolForeground(state: blueState, color: .blue))
                     .opacity(attributeOpacity(state: blueState))
+                    .onLongPressGesture { removeOtherUnkownColorAttributes(color: .green) }
+                    .simultaneousGesture(LongPressGesture().onEnded({_ in removeOtherUnkownColorAttributes(color: .blue)}))
             }
             Spacer()
             HStack(spacing: 13) {
@@ -180,30 +341,35 @@ struct CardRowView: View {
                     .rotationEffect(Angle(degrees: -90))
                     .foregroundStyle(numForeground(state: oneState))
                     .opacity(attributeOpacity(state: oneState))
+                    .simultaneousGesture(LongPressGesture().onEnded({_ in removeOtherUnkownNumberAttributes(number: 1)}))
                 Button(action: { stateUpdator(state: &twoState) }) { label: do { Image(systemName: twoState == KNOWN ? "2.circle.fill" : "2.circle") } }
                     .buttonStyle(PlainButtonStyle())
                     .font(.title)
                     .rotationEffect(Angle(degrees: -90))
                     .foregroundStyle(numForeground(state: twoState))
                     .opacity(attributeOpacity(state: twoState))
+                    .simultaneousGesture(LongPressGesture().onEnded({_ in removeOtherUnkownNumberAttributes(number: 2)}))
                 Button(action: { stateUpdator(state: &threeState) }) { label: do { Image(systemName: threeState == KNOWN ? "3.circle.fill" : "3.circle") } }
                     .buttonStyle(PlainButtonStyle())
                     .font(.title)
                     .rotationEffect(Angle(degrees: -90))
                     .foregroundStyle(numForeground(state: threeState))
                     .opacity(attributeOpacity(state: threeState))
+                    .simultaneousGesture(LongPressGesture().onEnded({_ in removeOtherUnkownNumberAttributes(number: 3)}))
                 Button(action: { stateUpdator(state: &fourState) }) { label: do { Image(systemName: fourState == KNOWN ? "4.circle.fill" : "4.circle") } }
                     .buttonStyle(PlainButtonStyle())
                     .font(.title)
                     .rotationEffect(Angle(degrees: -90))
                     .foregroundStyle(numForeground(state: fourState))
                     .opacity(attributeOpacity(state: fourState))
+                    .simultaneousGesture(LongPressGesture().onEnded({_ in removeOtherUnkownNumberAttributes(number: 4)}))
                 Button(action: { stateUpdator(state: &fiveState) }) { label: do { Image(systemName: fiveState == KNOWN ? "5.circle.fill" : "5.circle") } }
                     .buttonStyle(PlainButtonStyle())
                     .font(.title)
                     .rotationEffect(Angle(degrees: -90))
                     .foregroundStyle(numForeground(state: fiveState))
                     .opacity(attributeOpacity(state: fiveState))
+                    .simultaneousGesture(LongPressGesture().onEnded({_ in removeOtherUnkownNumberAttributes(number: 5)}))
             }
         }
     }
