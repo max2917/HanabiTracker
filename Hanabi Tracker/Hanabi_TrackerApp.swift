@@ -9,6 +9,9 @@ import SwiftUI
 
 @main
 struct Hanabi_TrackerApp: App {
+    init() {
+        UIApplication.shared.isIdleTimerDisabled = true
+    }
     var body: some Scene {
         WindowGroup {
             ContentView()

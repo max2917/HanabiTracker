@@ -26,6 +26,8 @@ let FOUR = 9
 let FIVE = 10
 
 
+
+
 class Card: Identifiable {
     let id = UUID() // Unique identifier
     
@@ -45,6 +47,7 @@ class Card: Identifiable {
 }
 
 struct ContentView: View {
+    
     @State var cards = [
         Card(),
         Card(),
